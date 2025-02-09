@@ -24,9 +24,15 @@ jobs:
 
       - name: Configure CMake
         run: cmake -S . -B build --preset debug
+        shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
         env:
-          VCPKG_ROOT: ${{ runner.tool_cache }}/vcpkg
+          VCPKG_ROOT: C:\hostedtoolcache\windows\vcpkg
           VCPKG_DEFAULT_TRIPLET: x64-windows
+          CMAKE_BUILD_TYPE: "Debug"
+          CMAKE_PREFIX_PATH: "vcpkg_installed/x64-windows/share"
+          CMAKE_TOOLCHAIN_FILE: C:\hostedtoolcache\windows\vcpkg\scripts\buildsystems\vcpkg.cmake
+          SDL2_DIR: "vcpkg_installed/installed/x64-windows/share/sdl2"
+          VCPKG_FEATURE_FLAGS: "manifests"
 
       - name: Build
         run: cmake --build build --config Debug
