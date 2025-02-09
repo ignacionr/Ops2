@@ -18,19 +18,19 @@ jobs:
 
       - name: Set up vcpkg
         run: |
-          git clone https://github.com/Microsoft/vcpkg.git
-          .\vcpkg\bootstrap-vcpkg.bat
-          .\vcpkg\vcpkg integrate install
+          git clone https://github.com/Microsoft/vcpkg.git ${{github.workspace}}/vcpkg
+          ${{github.workspace}}/vcpkg/bootstrap-vcpkg.bat
+          ${{github.workspace}}/vcpkg/vcpkg integrate install
 
       - name: Configure CMake
         run: cmake -S . -B build --preset debug
         shell: pwsh
         env:
-          VCPKG_ROOT: C:\hostedtoolcache\windows\vcpkg
+          VCPKG_ROOT: ${{github.workspace}}/vcpkg
           VCPKG_DEFAULT_TRIPLET: x64-windows
           CMAKE_BUILD_TYPE: "Debug"
           CMAKE_PREFIX_PATH: "vcpkg_installed/x64-windows/share"
-          CMAKE_TOOLCHAIN_FILE: "C:\\hostedtoolcache\\windows\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+          CMAKE_TOOLCHAIN_FILE: "${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake"
           SDL2_DIR: "vcpkg_installed/installed/x64-windows/share/sdl2"
           VCPKG_FEATURE_FLAGS: "manifests"
 
