@@ -24,7 +24,7 @@ jobs:
 
       - name: Configure CMake
         run: cmake -S . -B build --preset debug
-        shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+        shell: pwsh
         env:
           VCPKG_ROOT: C:\hostedtoolcache\windows\vcpkg
           VCPKG_DEFAULT_TRIPLET: x64-windows
