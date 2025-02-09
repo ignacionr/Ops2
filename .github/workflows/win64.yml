@@ -23,7 +23,7 @@ jobs:
           ${{github.workspace}}/vcpkg/vcpkg integrate install
 
       - name: Configure CMake
-        run: cmake -S . -B build --preset debug
+        run: cmake -S . -B build --preset debug -G "Visual Studio 17 2022"
         shell: pwsh
         env:
           VCPKG_ROOT: ${{github.workspace}}/vcpkg
