@@ -1,7 +1,9 @@
 #pragma once
 
+#include <expected>
 #include <functional>
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -9,7 +11,7 @@ namespace ignacionr::text {
     using command_callback_t = std::function<void(std::string_view)>;
     struct command_source {
         std::function<void(std::string_view, command_callback_t)> list_commands;
-        std::function<std::string(std::string_view)> execute;
+        std::function<std::optional<std::expected<std::string, std::string>>(std::string_view)> execute;
     };
     struct command_host
     {
@@ -36,6 +38,23 @@ namespace ignacionr::text {
             {
                 source.list_commands(partial, callback);
             }
+        }
+
+        std::expected<std::string,std::string> execute(std::string_view command)
+        {
+            if (auto it = direct_commands.find(std::string(command)); it != direct_commands.end())
+            {
+                return it->second();
+            }
+            for (auto &source : sources)
+            {
+                auto result = source.execute(command);
+                if (result)
+                {
+                    return *result;
+                }
+            }
+            return std::unexpected("Command not found");
         }
 
         std::map<std::string, std::function<std::string()>> direct_commands;
