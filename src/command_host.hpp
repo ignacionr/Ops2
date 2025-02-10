@@ -9,9 +9,11 @@
 
 namespace ignacionr::text {
     using command_callback_t = std::function<void(std::string_view)>;
+    using response_t = std::expected<std::string,std::string>;
+
     struct command_source {
         std::function<void(std::string_view, command_callback_t)> list_commands;
-        std::function<std::optional<std::expected<std::string, std::string>>(std::string_view)> execute;
+        std::function<std::optional<response_t>(std::string_view)> execute;
     };
     struct command_host
     {
@@ -40,7 +42,7 @@ namespace ignacionr::text {
             }
         }
 
-        std::expected<std::string,std::string> execute(std::string_view command)
+        response_t execute(std::string_view command)
         {
             if (auto it = direct_commands.find(std::string(command)); it != direct_commands.end())
             {
@@ -57,7 +59,7 @@ namespace ignacionr::text {
             return std::unexpected("Command not found");
         }
 
-        std::map<std::string, std::function<std::string()>> direct_commands;
+        std::map<std::string, std::function<response_t()>> direct_commands;
         std::vector<command_source> sources;
     };
 }
