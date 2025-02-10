@@ -15,11 +15,11 @@ add_executable(ops2
     src/ops2.cpp
 )
 
-# Find SDL2 package
+find_package(curl CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 
 # Link SDL2 to your executable
-target_link_libraries(ops2 PRIVATE SDL2::SDL2 SDL2::SDL2main)
+target_link_libraries(ops2 PRIVATE SDL2::SDL2 SDL2::SDL2main CURL::libcurl)
 
 # Precompiled headers for Windows/MSVC
 if (MSVC)
