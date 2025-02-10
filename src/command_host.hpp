@@ -17,7 +17,7 @@ namespace ignacionr::text {
     };
     struct command_host
     {
-        void register_command(std::string &&name, std::function<std::string()> &&command)
+        void register_command(std::string &&name, std::function<response_t()> &&command)
         {
             direct_commands.emplace(std::move(name), std::move(command));
         }
