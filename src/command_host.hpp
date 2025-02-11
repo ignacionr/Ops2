@@ -4,6 +4,7 @@
 #include <functional>
 #include <map>
 #include <optional>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -17,6 +18,15 @@ namespace ignacionr::text {
     };
     struct command_host
     {
+        command_host() {
+            register_command("help", [this](){
+                std::stringstream result {"Available commands:\n"};
+                list_commands({}, [&result](std::string_view name){
+                    result << '\t' << name << '\n';
+                });
+                return result.str();
+            });
+        }
         void register_command(std::string &&name, std::function<response_t()> &&command)
         {
             direct_commands.emplace(std::move(name), std::move(command));
